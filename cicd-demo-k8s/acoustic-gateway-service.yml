@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: acoustic-gateway-app
+  labels:
+    app: acoustic-gateway-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app : acoustic-gateway-app
+  template:
+    metadata:
+      labels:
+        app: acoustic-gateway-app
+    spec:
+      containers:
+      - name: acoustic-gateway-app
+        image: niksdocker2233/acoustic-gateway:0.0.1
+        imagePullPolicy: Never
+        ports:
+          - containerPort: 9191
+        env:
+          - name: EUREKA_SERVER_ADDRESS
+            valueFrom:
+                configMapKeyRef:
+                  name: acoustic-cm
+                  key: eureka_service_address
+---                  
+
+kind: Service
+apiVersion: v1
+metadata:
+  name:  acoustic-gateway-svc
+spec:
+  type: LoadBalancer
+  externalIPs:
+   - 172.18.2.1
+  ports:
+   - port: 80
+     targetPort: 9191
+     protocol: TCP
+  selector:
+    app:  acoustic-gateway-app

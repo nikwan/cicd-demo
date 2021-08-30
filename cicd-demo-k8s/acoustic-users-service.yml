@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: acoustic-users-cm
+data:
+  POSTGRES_URL: jdbc:postgresql://postgres:5432/acoustic?ApplicationName=niks_acoustic
+  
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: acoustic-users-app
+  labels:
+    app: acoustic-users-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app : acoustic-users-app
+  template:
+    metadata:
+      labels:
+        app: acoustic-users-app
+    spec:
+      containers:
+      - name: acoustic-users-app
+        image: niksdocker2233/acoustic-users:0.0.1
+        command: ["java"]
+        args: ["-jar", "-Dspring.profiles.active=dev", "/app.jar"]
+        imagePullPolicy: Never
+        ports:
+          - containerPort: 8091
+        envFrom:
+            - configMapRef:
+                name: acoustic-users-cm
+            - secretRef:
+                name: postgres-secrets
+        env:
+          - name: EUREKA_SERVER_ADDRESS
+            valueFrom:
+                configMapKeyRef:
+                  name: acoustic-cm
+                  key: eureka_service_address      
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name:  acoustic-users-svc
+spec:
+  selector:
+    app:  acoustic-users-app
+  ports:
+  - port:  80
+    targetPort:  8091

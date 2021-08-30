@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: acoustic-search-app
+  labels:
+    app: acoustic-search-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app : acoustic-search-app
+  template:
+    metadata:
+      labels:
+        app: acoustic-search-app
+    spec:
+      containers:
+      - name: acoustic-search-app
+        image: niksdocker2233/acoustic-search:0.0.1
+        imagePullPolicy: Never
+        ports:
+          - containerPort: 8077
+        env:
+          - name: EUREKA_SERVER_ADDRESS
+            valueFrom:
+                configMapKeyRef:
+                  name: acoustic-cm
+                  key: eureka_service_address
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name:  acoustic-search-svc
+spec:
+  selector:
+    app:  acoustic-search-app
+  ports:
+  - port:  80
+    targetPort:  8077
