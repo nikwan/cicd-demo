@@ -1,0 +1,36 @@
+server:
+ port: 8077
+ #servlet:
+  #context-path: /acoustic-search
+ #tomcat:    #threads:      #max: 10
+---
+
+spring:
+ application:    name: acoustic-search
+ datasource:
+  url: jdbc:h2:mem:testdb
+  driver-class-name: org.h2.Driver
+  username: admin
+  password: admin
+ jpa:    show-sql: true    hibernate:      ddl-auto: update
+ h2:    console:      enabled: true      path: /h2
+
+---
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: acoustic-0
+  client:
+    enabled: true
+    fetchRegistry: true
+    register-with-eureka: true
+    service-url:
+     defaultZone: http://acoustic-0.acoustic.default.svc.cluster.local:8067/eureka,http://acoustic-1.acoustic.default.svc.cluster.local:8067/eureka
+---
+
+logging:  level:    '[com.acoustic.search]': debug
+    '[org.springframework.web]': info
+    '[org.springframework.boot,logging.level.web]': info
+    '[com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver]': warn  file:    path: /app/cicd/logs/acoustic-search.log
+debug: false
