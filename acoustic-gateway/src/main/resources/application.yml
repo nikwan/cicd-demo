@@ -1,0 +1,34 @@
+server:
+ port: 9191
+---
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: acoustic-0
+  client:
+    enabled: true
+    fetchRegistry: true
+    register-with-eureka: true
+    service-url:
+     defaultZone: ${EUREKA_SERVER_ADDRESS}
+---
+spring:
+  main:
+   web-application-type: reactive
+  application:
+    name: acoustic-gateway      
+---
+logging:
+  level:
+    '[io.netty.handler.codec.string]': info
+    '[com.acoustic.gateway]': debug
+    '[org.springframework.web]': info
+    '[org.springframework.boot,logging.level.web]': info
+    '[com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver]': warn
+  file:
+    path: /app/cicd/logs/api-gw.log
+debug: false
+---
+logging:
+  level:
+    root: INFO
