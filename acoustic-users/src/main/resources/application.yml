@@ -1,0 +1,82 @@
+spring:
+  devtools:
+    add-properties: true
+  profiles:
+    active:
+    - default 
+  application:
+    name: acoustic-users
+  datasource:
+   url: jdbc:postgresql://localhost:32143/acoustic?ApplicationName=niks_acoustic
+   driver-class-name: org.postgresql.Driver
+   username: root
+   password: root
+  jpa:
+   properties:
+    hibernate:
+     dialect: org.hibernate.dialect.PostgreSQLDialect
+   show-sql: true          
+
+server:
+ port: 8091
+
+eureka:
+  instance:
+    prefer-ip-address: false
+    hostname: acoustic-0
+  client:
+    enabled: false
+    fetchRegistry: false
+    register-with-eureka: false
+    service-url:
+     defaultZone: http://localhost:8067/eureka
+---
+spring:
+  config:
+    activate:
+      on-profile:
+      - dev
+  application:
+    name: acoustic-users
+  datasource:
+   url: ${POSTGRES_URL}
+   driver-class-name: org.postgresql.Driver
+   username: ${POSTGRES_USER}
+   password: ${POSTGRES_PASS}
+  jpa:
+   properties:
+    hibernate:
+     dialect: org.hibernate.dialect.PostgreSQLDialect
+   show-sql: true          
+
+server:
+ port: 8091
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: acoustic-0
+  client:
+    enabled: true
+    fetchRegistry: true
+    register-with-eureka: true
+    service-url:
+     defaultZone: http://acoustic-0.acoustic.default.svc.cluster.local:8067/eureka,http://acoustic-1.acoustic.default.svc.cluster.local:8067/eureka
+---
+logging:
+  level:
+    '[io.netty.handler.codec.string]': info
+    '[com.acoustic.users]': debug
+    '[org.springframework.web]': info
+    '[org.springframework.boot,logging.level.web]': info
+    '[com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver]': warn
+  file:
+    path: /app/cicd/logs/users.log
+debug: false
+---
+logging:
+  level:
+    root: INFO
+
+test:
+  flag: true
