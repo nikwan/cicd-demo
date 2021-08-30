@@ -1,0 +1,36 @@
+server:
+ port: 8067
+---
+eureka:
+  instance:
+    hostname: acoustic-registry
+    preferIpAddress : true
+  client:
+    enabled: true
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone:  ${EUREKA_SERVER_ADDRESS}
+  server:
+    enableSelfPreservation: true
+
+---
+spring:
+  application:
+    name: acoustic-registry      
+---
+logging:
+  level:
+    '[io.netty.handler.codec.string]': info
+    '[com.acoustic.registry]': debug
+    '[org.springframework.web]': info
+    '[org.springframework.boot,logging.level.web]': info
+    '[com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver]': warn
+    #'[org.springframework.web.servlet.DispatcherServlet]': debug
+  file:
+    path: /app/cicd/logs/acoustic-registry.log
+debug: false
+---
+logging:
+  level:
+    root: INFO
