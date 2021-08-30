@@ -38,7 +38,7 @@ public class UserController {
 	void init() {
 		this.log.info("****************************************");
 		this.log.debug("test-flag:{} version:{}", this.test, "V9.0");
-		this.log.debug("db test:{}", testDao.findAll());
+		this.log.debug("db_test:{}", testDao.findAll());
 		this.log.info("****************************************");
 	}
 
