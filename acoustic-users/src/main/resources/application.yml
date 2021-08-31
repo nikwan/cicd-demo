@@ -6,6 +6,12 @@ spring:
     - default 
   application:
     name: acoustic-users
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    enabled: true
+    base-url: http://10.152.183.113:9411
   datasource:
    url: jdbc:postgresql://localhost:32143/acoustic?ApplicationName=niks_acoustic
    driver-class-name: org.postgresql.Driver
@@ -38,6 +44,12 @@ spring:
       - dev
   application:
     name: acoustic-users
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    enabled: true
+    base-url: ${ZIPKIN_URL}
   datasource:
    url: ${POSTGRES_URL}
    driver-class-name: org.postgresql.Driver

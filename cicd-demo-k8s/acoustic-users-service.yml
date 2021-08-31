@@ -37,6 +37,8 @@ spec:
             - secretRef:
                 name: postgres-secrets
         env:
+          - name: ZIPKIN_URL
+            value: "http://zipkin.dist-tracing.svc.cluster.local:9411"
           - name: EUREKA_SERVER_ADDRESS
             valueFrom:
                 configMapKeyRef:
