@@ -17,10 +17,14 @@ spec:
       containers:
       - name: acoustic-search-app
         image: niksdocker2233/acoustic-search:0.0.1
+        command: ["java"]
+        args: ["-jar", "-Dspring.profiles.active=dev", "/app.jar"]
         imagePullPolicy: Never
         ports:
           - containerPort: 8077
         env:
+          - name: ZIPKIN_URL
+            value: "http://zipkin.dist-tracing.svc.cluster.local:9411"
           - name: EUREKA_SERVER_ADDRESS
             valueFrom:
                 configMapKeyRef:
