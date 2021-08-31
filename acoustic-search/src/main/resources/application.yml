@@ -1,21 +1,68 @@
 server:
  port: 8077
- #servlet:
-  #context-path: /acoustic-search
- #tomcat:    #threads:      #max: 10
 ---
-
 spring:
- application:    name: acoustic-search
+ profiles:    active:    - default
+ application:
+    name: acoustic-search
+ sleuth:
+    sampler:
+      probability: 1.0
+ zipkin:
+    enabled: true
+    base-url: http://10.152.183.113:9411/
  datasource:
   url: jdbc:h2:mem:testdb
   driver-class-name: org.h2.Driver
   username: admin
   password: admin
- jpa:    show-sql: true    hibernate:      ddl-auto: update
- h2:    console:      enabled: true      path: /h2
+ jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+ h2:
+    console:
+      enabled: true
+      path: /h2
 
+eureka:
+  instance:
+    prefer-ip-address: false
+    hostname: acoustic-0
+  client:
+    enabled: false
+    fetchRegistry: false
+    register-with-eureka: false
+    service-url:
+     defaultZone: http://localhost:8067/eureka
 ---
+
+spring:
+ config:
+    activate:
+      on-profile:
+      - dev
+ application:
+    name: acoustic-search
+ sleuth:
+    sampler:
+      probability: 1.0
+ zipkin:
+    enabled: true
+    base-url: ${ZIPKIN_URL}
+ datasource:
+  url: jdbc:h2:mem:testdb
+  driver-class-name: org.h2.Driver
+  username: admin
+  password: admin
+ jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+ h2:
+    console:
+      enabled: true
+      path: /h2
 
 eureka:
   instance:
@@ -27,6 +74,7 @@ eureka:
     register-with-eureka: true
     service-url:
      defaultZone: http://acoustic-0.acoustic.default.svc.cluster.local:8067/eureka,http://acoustic-1.acoustic.default.svc.cluster.local:8067/eureka
+
 ---
 
 logging:  level:    '[com.acoustic.search]': debug
