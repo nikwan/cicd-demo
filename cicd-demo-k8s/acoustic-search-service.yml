@@ -35,10 +35,14 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name:  acoustic-search-svc
+  name:  acoustic-search-app-svc
+  labels:
+    app: acoustic-search-app
 spec:
   selector:
     app:  acoustic-search-app
   ports:
   - port:  80
     targetPort:  8077
+    name: http
+    

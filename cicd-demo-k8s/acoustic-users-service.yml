@@ -31,6 +31,7 @@ spec:
         imagePullPolicy: Never
         ports:
           - containerPort: 8091
+            name: http
         envFrom:
             - configMapRef:
                 name: acoustic-users-cm
@@ -49,10 +50,13 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name:  acoustic-users-svc
+  name:  acoustic-users-app-svc
+  labels:
+    app: acoustic-users-app
 spec:
   selector:
     app:  acoustic-users-app
   ports:
   - port:  80
     targetPort:  8091
+    name: http
