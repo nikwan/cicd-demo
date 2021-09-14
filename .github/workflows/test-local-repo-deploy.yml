@@ -41,5 +41,5 @@ jobs:
           ls -l
           echo current working dir
           pwd
-          echo docker repo is >>>>>>> $DOCKER_REPO
+          echo 'docker repo is >>>>>' $DOCKER_REPO
           
