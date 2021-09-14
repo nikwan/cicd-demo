@@ -28,7 +28,7 @@ jobs:
            pwd
     - name: Building and Pushing Docker-Test-Service
       run: |
-           export ${{env.DOCKER_REPO}}
+           export $DOCKER_REPO
            mvn package --file docker-test/pom.xml
       env:
           MAVEN_USERNAME: ${{ secrets.DOCKER_USERNAME }}
