@@ -1,0 +1,43 @@
+name: CICD Demo Pipeline
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+        server-id: docker.io
+        server-username: MAVEN_USERNAME
+        server-password: MAVEN_PASSWORD        
+
+    - name: List Dirs In OS
+      run: |
+           ls -l
+           pwd
+    - name: Building and Pushing Acoustic-User-Service
+      run: mvn package --file acoustic-users/pom.xml
+      env:
+          MAVEN_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  Deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+    - name: kubectl - Acoustic Cloud cluster.
+      run: |
+          ls -l
+          echo current working dir
+          pwd
+          microk8s kubectl apply -f cicd-demo-k8s/acoustic-registry.yml
+    
