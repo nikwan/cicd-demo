@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: monitoring
+  labels:
+    app: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus:latest
+          args:
+            - "--config.file=/mnt/prom/conf/prometheus.yml"
+            - "--storage.tsdb.path=/mnt/prom/data/"
+          ports:
+            - containerPort: 9090
+              name: http
+          volumeMounts:
+            - name: prometheus-storage-volume
+              mountPath: /mnt/prom/data/
+            - name: prometheus-config-map
+              mountPath: /mnt/prom/conf/
+      volumes:
+        - name: prometheus-storage-volume
+          emptyDir: {}
+        - name: prometheus-config-map
+          configMap:
+            name: prometheus
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-service
+  namespace: monitoring
+  annotations:
+      prometheus.io/scrape: 'true'
+      prometheus.io/port:   '9090'
+  
+spec:
+  selector: 
+    app: prometheus
+  type: NodePort  
+  ports:
+    - port: 9080
+      targetPort: 9090 
+      nodePort: 30000
