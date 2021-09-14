@@ -56,7 +56,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<repository>${DOCKER_REPO}/docker-test</repository>
+					<repository>${env.DOCKER_REPO}/docker-test</repository>
 					<tag>${project.version}</tag>
 					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
 				</configuration>
