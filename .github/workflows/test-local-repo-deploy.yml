@@ -42,6 +42,7 @@ jobs:
       env:
          DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
       run: |
+          export DOCKER_REPO=$DOCKER_REPO
           ls -l
           echo current working dir
           pwd
