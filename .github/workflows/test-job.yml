@@ -39,5 +39,5 @@ jobs:
           ls -l
           echo current working dir
           pwd
-          microk8s kubectl -f cicd-demo-k8s/acoustic-registry.yml
+          microk8s kubectl apply -f cicd-demo-k8s/acoustic-registry.yml
     
