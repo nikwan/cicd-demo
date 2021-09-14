@@ -34,7 +34,7 @@ jobs:
     needs: build
     runs-on: self-hosted
     steps:
-    - name: kubectl - Acoustic Cloud cluster.
+    - name: kubectl - Docker Test deployment.
       env:
          DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
       run: |
