@@ -1,0 +1,15 @@
+package com.docker.test;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+
+@SpringBootApplication
+@ComponentScan(basePackages = {"com.docker.test"})
+public class DockerTestApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(DockerTestApplication.class, args);
+	}
+
+}

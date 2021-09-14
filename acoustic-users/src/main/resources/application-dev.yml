@@ -1,0 +1,63 @@
+server:
+ port: 8091
+
+spring:
+  config:
+    activate:
+      on-profile:
+      - dev
+  application:
+    name: acoustic-users
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    enabled: true
+    base-url: ${ZIPKIN_URL}
+  datasource:
+   url: ${POSTGRES_URL}
+   driver-class-name: org.postgresql.Driver
+   username: ${POSTGRES_USER}
+   password: ${POSTGRES_PASS}
+  jpa:
+   properties:
+    hibernate:
+     dialect: org.hibernate.dialect.PostgreSQLDialect
+   show-sql: true          
+
+management:
+  endpoints:
+    web:
+      exposure:
+        exclude:
+        - beans
+        include:
+        - '*'
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: acoustic-0
+  client:
+    enabled: true
+    fetchRegistry: true
+    register-with-eureka: true
+    service-url:
+     defaultZone: http://acoustic-0.acoustic.default.svc.cluster.local:8067/eureka,http://acoustic-1.acoustic.default.svc.cluster.local:8067/eureka
+---
+logging:
+  level:
+    '[io.netty.handler.codec.string]': info
+    '[com.acoustic.users]': debug
+    '[org.springframework.web]': info
+    '[org.springframework.boot,logging.level.web]': info
+    '[com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver]': warn
+  file:
+    path: /app/cicd/logs/users.log
+debug: false
+---
+logging:
+  level:
+    root: INFO
+
+test:
+  flag: true

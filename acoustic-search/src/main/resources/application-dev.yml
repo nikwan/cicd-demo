@@ -1,0 +1,57 @@
+server:
+ port: 8077
+---
+spring:
+ config:
+    activate:
+      on-profile:
+      - dev
+ application:
+    name: acoustic-search
+ sleuth:
+    sampler:
+      probability: 1.0
+ zipkin:
+    enabled: true
+    base-url: ${ZIPKIN_URL}
+ datasource:
+  url: jdbc:h2:mem:testdb
+  driver-class-name: org.h2.Driver
+  username: admin
+  password: admin
+ jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+ h2:
+    console:
+      enabled: true
+      path: /h2
+
+management:
+  endpoints:
+    web:
+      exposure:
+        exclude:
+        - beans
+        include:
+        - '*'
+        
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: acoustic-0
+  client:
+    enabled: true
+    fetchRegistry: true
+    register-with-eureka: true
+    service-url:
+     defaultZone: http://acoustic-0.acoustic.default.svc.cluster.local:8067/eureka,http://acoustic-1.acoustic.default.svc.cluster.local:8067/eureka
+
+---
+
+logging:  level:    '[com.acoustic.search]': debug
+    '[org.springframework.web]': info
+    '[org.springframework.boot,logging.level.web]': info
+    '[com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver]': warn  file:    path: /app/cicd/logs/acoustic-search.log
+debug: false
