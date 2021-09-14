@@ -1,3 +1,6 @@
+server:
+ port: 8091
+
 spring:
   devtools:
     add-properties: true
@@ -23,8 +26,14 @@ spring:
      dialect: org.hibernate.dialect.PostgreSQLDialect
    show-sql: true          
 
-server:
- port: 8091
+management:
+  endpoints:
+    web:
+      exposure:
+        exclude:
+        - beans
+        include:
+        - '*'
 
 eureka:
   instance:
@@ -36,44 +45,7 @@ eureka:
     register-with-eureka: false
     service-url:
      defaultZone: http://localhost:8067/eureka
----
-spring:
-  config:
-    activate:
-      on-profile:
-      - dev
-  application:
-    name: acoustic-users
-  sleuth:
-    sampler:
-      probability: 1.0
-  zipkin:
-    enabled: true
-    base-url: ${ZIPKIN_URL}
-  datasource:
-   url: ${POSTGRES_URL}
-   driver-class-name: org.postgresql.Driver
-   username: ${POSTGRES_USER}
-   password: ${POSTGRES_PASS}
-  jpa:
-   properties:
-    hibernate:
-     dialect: org.hibernate.dialect.PostgreSQLDialect
-   show-sql: true          
 
-server:
- port: 8091
-
-eureka:
-  instance:
-    prefer-ip-address: true
-    hostname: acoustic-0
-  client:
-    enabled: true
-    fetchRegistry: true
-    register-with-eureka: true
-    service-url:
-     defaultZone: http://acoustic-0.acoustic.default.svc.cluster.local:8067/eureka,http://acoustic-1.acoustic.default.svc.cluster.local:8067/eureka
 ---
 logging:
   level:
