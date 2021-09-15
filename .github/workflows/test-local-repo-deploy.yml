@@ -47,5 +47,5 @@ jobs:
           echo current working dir
           pwd
           echo 'docker repo is >>>>>' $DOCKER_REPO
-          microk8s kubectl apply -f cicd-demo-k8s/docker-test-deploy.yml
+          cat cicd-demo-k8s/docker-test-deploy.yml | sed -e 's/${DOCKER_REPO}/'$DOCKER_REPO'/g' | microk8s kubectl apply -f -
           
