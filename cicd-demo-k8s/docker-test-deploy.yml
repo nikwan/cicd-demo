@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: docker-test
-        image: $(DOCKER_REPO)/docker-test:0.0.1
+        image: ${DOCKER_REPO}/docker-test:0.0.1
         ports:
         - containerPort: 8078
