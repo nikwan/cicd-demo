@@ -2,6 +2,7 @@ name: Test CICD Tag
 on:
   push:
     branches: [ main ]
+    tags: v2.0
   workflow_dispatch:
 
 jobs:
@@ -12,7 +13,6 @@ jobs:
     - name: Checkout Tag CICD DEMO
       uses: actions/checkout@v2
       with:
-        ref: refs/tags/v2.0
         path: tags
     - name: Show GitHub ref
       run: echo "$GITHUB_REF"    
@@ -52,4 +52,5 @@ jobs:
           echo current working dir
           pwd
           echo 'docker repo is >>>>>' $DOCKER_REPO
+          cat tags/cicd-demo-k8s/docker-test-tag-deploy.yml | sed -e 's/${DOCKER_REPO}/'$DOCKER_REPO'/g;s/${DOCKER_TAG}/'$DOCKER_TAG'/g'| microk8s kubectl apply -f -
           
