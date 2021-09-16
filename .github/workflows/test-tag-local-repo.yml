@@ -1,13 +1,14 @@
 name: Test CICD Tag
 on:
   push:
-    branches: [ main ]
-    tags: v2.0
+    tags: 'v2.0'
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: self-hosted
+    env:
+      VERSION: v2.0
 
     steps:
     - name: Checkout Tag CICD DEMO
@@ -38,7 +39,7 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
-          DOCKER_TAG: v2.0
+          DOCKER_TAG: ${{ env.VERSION }}
   Deploy:
     needs: build
     runs-on: self-hosted
@@ -46,7 +47,7 @@ jobs:
     - name: kubectl - Tag Test deployment.
       env:
          DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
-         DOCKER_TAG: $DOCKER_TAG
+         DOCKER_TAG: ${{ env.VERSION }}
       run: |
           export DOCKER_REPO=$DOCKER_REPO
           export DOCKER_TAG=$DOCKER_TAG
@@ -54,5 +55,6 @@ jobs:
           echo current working dir
           pwd
           echo 'docker repo is >>>>>' $DOCKER_REPO
+          echo 'docker tag is  >>>>>' $DOCKER_TAG
           cat tags/cicd-demo-k8s/docker-test-tag-deploy.yml | sed -e 's/${DOCKER_REPO}/'$DOCKER_REPO'/g;s/${DOCKER_TAG}/'$DOCKER_TAG'/g'| microk8s kubectl apply -f -
           
