@@ -46,8 +46,10 @@ jobs:
     - name: kubectl - Tag Test deployment.
       env:
          DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
+         DOCKER_TAG: $DOCKER_TAG
       run: |
           export DOCKER_REPO=$DOCKER_REPO
+          export DOCKER_TAG=$DOCKER_TAG
           ls -l
           echo current working dir
           pwd
