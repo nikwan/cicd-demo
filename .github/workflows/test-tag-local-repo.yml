@@ -54,6 +54,10 @@ jobs:
           ls -l
           echo current working dir
           pwd
+          set COMMIT_ID=${git rev-list --tags --date-order | head -1}
+          set TAG=${git show-ref --tags | grep COMMIT_ID | awk -F / '{print  $NF}'}
+          echo COMMIT_ID TAG
+          echo git rev-list --tags --date-order | head -1
           echo 'docker repo is >>>>>' $DOCKER_REPO
           echo 'docker tag is  >>>>>' $DOCKER_TAG
           cat tags/cicd-demo-k8s/docker-test-tag-deploy.yml | sed -e 's/${DOCKER_REPO}/'$DOCKER_REPO'/g;s/${DOCKER_TAG}/'$DOCKER_TAG'/g'| microk8s kubectl apply -f -
