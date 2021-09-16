@@ -47,7 +47,7 @@ jobs:
     - name: kubectl - Tag Test deployment.
       env:
          DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
-         DOCKER_TAG: ${{ jobs.build.env.VERSION }}
+         DOCKER_TAG: ${{ env.VERSION }}
       run: |
           export DOCKER_REPO=$DOCKER_REPO
           export DOCKER_TAG=$DOCKER_TAG
