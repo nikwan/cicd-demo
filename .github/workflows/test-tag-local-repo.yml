@@ -1,0 +1,48 @@
+name: Test CICD Tag
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ed-dev-self-hosted
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+        server-id: docker.io
+        server-username: MAVEN_USERNAME
+        server-password: MAVEN_PASSWORD        
+
+    - name: List Dirs In OS
+      run: |
+           ls -l
+           pwd
+    - name: Building and Pushing Docker-Test-Service
+      run: |
+           export DOCKER_REPO=$DOCKER_REPO
+           mvn package --file docker-test/pom.xml
+      env:
+          MAVEN_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
+  Deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+    - name: kubectl - Docker Test deployment.
+      env:
+         DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
+      run: |
+          export DOCKER_REPO=$DOCKER_REPO
+          ls -l
+          echo current working dir
+          pwd
+          echo 'docker repo is >>>>>' $DOCKER_REPO
+          cat cicd-demo-k8s/docker-test-deploy.yml | sed -e 's/${DOCKER_REPO}/'$DOCKER_REPO'/g' | microk8s kubectl apply -f -
