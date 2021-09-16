@@ -50,13 +50,13 @@ jobs:
          DOCKER_TAG: ${{ env.VERSION }}
       run: |
           export DOCKER_REPO=$DOCKER_REPO
-          export DOCKER_TAG=$DOCKER_TAG
           ls -l
           echo current working dir
           pwd
-          set COMMIT_ID=${git rev-list --tags --date-order | head -1}
-          set TAG=${git show-ref --tags | grep COMMIT_ID | awk -F / '{print  $NF}'}
-          echo COMMIT_ID TAG
+          export COMMIT_ID=`${git rev-list --tags --date-order | head -1}`
+          export TAG=`${git show-ref --tags | grep $COMMIT_ID | awk -F / '{print  $NF}'}`
+          export DOCKER_TAG=$TAG
+          echo commitId:$COMMIT_ID and tag:$TAG
           echo git rev-list --tags --date-order | head -1
           echo 'docker repo is >>>>>' $DOCKER_REPO
           echo 'docker tag is  >>>>>' $DOCKER_TAG
