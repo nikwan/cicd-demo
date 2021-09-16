@@ -6,14 +6,13 @@ on:
 
 jobs:
   build:
-
     runs-on: self-hosted
 
     steps:
     - name: Checkout Tag CICD DEMO
       uses: actions/checkout@v2
       with:
-        ref: refs/tags/v1.0
+        ref: refs/tags/v2.0
     - name: Show GitHub ref
       run: echo "$GITHUB_REF"    
     
@@ -38,7 +37,7 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
-          DOCKER_TAG: v1.0
+          DOCKER_TAG: v2.0
   Deploy:
     needs: build
     runs-on: self-hosted
