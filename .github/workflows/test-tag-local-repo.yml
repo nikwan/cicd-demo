@@ -10,18 +10,27 @@ jobs:
     env:
       VERSION: v2.0
 
+    outputs: 
+       output1: ${{ steps.TAG.outputs.TAG }}
+    
     steps:
     - name: Checkout Tag CICD DEMO
       uses: actions/checkout@v2
       with:
         path: tags
-    - name: Show GitHub ref
+    - name: Extract Latest Release Tag
+    - id: TAG
+      run: |
+          COMMIT_ID=`git rev-list --tags --date-order | head -1`
+          TAG=`git show-ref --tags | grep $COMMIT_ID | awk -F / '{print  $NF}'`
+          export DOCKER_TAG=$TAG
+          echo commitId:$COMMIT_ID and tag:$TAG
+          echo "::set-output name=TAG::$TAG"
+    - name: Print TAG 
       run: |
            echo "$GITHUB_REF"    
-           COMMIT_ID=`git rev-list --tags --date-order | head -1`
-           TAG=`git show-ref --tags | grep $COMMIT_ID | awk -F / '{print  $NF}'`
            export DOCKER_TAG=$TAG
-           echo commitId:$COMMIT_ID and tag:$TAG    
+           echo tag:$TAG    
     - name: Set up JDK 11
       uses: actions/setup-java@v2
       with:
@@ -53,10 +62,11 @@ jobs:
          DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
       run: |
           export DOCKER_REPO=$DOCKER_REPO
+          export DOCKER_TAG=${{needs.build.outputs.output1}}
           ls -l
           echo current working dir
           pwd
           echo 'docker repo is >>>>>' $DOCKER_REPO
-          echo 'docker tag is  >>>>>' $DOCKER_TAG
+          echo 'docker tag is  >>>>>' ${{needs.build.outputs.output1}}
           cat tags/cicd-demo-k8s/docker-test-tag-deploy.yml | sed -e 's/${DOCKER_REPO}/'$DOCKER_REPO'/g;s/${DOCKER_TAG}/'$DOCKER_TAG'/g'| microk8s kubectl apply -f -
           
