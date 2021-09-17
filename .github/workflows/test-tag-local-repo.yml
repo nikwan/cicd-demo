@@ -1,8 +1,6 @@
 name: Test CICD Tag
 on:
   push:
-    branches:
-      - main
     tags: 'v*.*'
   workflow_dispatch:
 
@@ -14,8 +12,6 @@ jobs:
        output1: ${{ steps.TAG.outputs.TAG }}
     
     steps:
-    - name: Clean previous repos
-      run: rm -r -f tags
     - name: Checkout Tag CICD DEMO
       uses: actions/checkout@v2
       with:
