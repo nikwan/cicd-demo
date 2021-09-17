@@ -7,9 +7,7 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-    env:
-      VERSION: v2.0
-
+    
     outputs: 
        output1: ${{ steps.TAG.outputs.TAG }}
     
@@ -22,7 +20,7 @@ jobs:
       run: |
           COMMIT_ID=`git rev-list --tags --date-order | head -1`
           TAG=`git show-ref --tags | grep $COMMIT_ID | awk -F / '{print  $NF}'`
-          export DOCKER_TAG=$TAG
+          export DOCKER_TAG=2.0
           echo commitId:$COMMIT_ID and tag:$TAG
           echo "::set-output name=TAG::$TAG"
     - name: Print TAG 
@@ -51,7 +49,7 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
-          DOCKER_TAG: ${{ env.VERSION }}
+          DOCKER_TAG: ${{needs.build.outputs.output1}}
   Deploy:
     needs: build
     runs-on: self-hosted
