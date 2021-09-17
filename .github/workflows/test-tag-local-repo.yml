@@ -21,7 +21,7 @@ jobs:
           COMMIT_ID=`git rev-list --tags --date-order | head -1`
           TAG=`git show-ref --tags | grep $COMMIT_ID | awk -F / '{print  $NF}'`
           echo commitId:$COMMIT_ID and tag:$TAG
-          echo "::set-output name=TAG::2.0"
+          echo "::set-output name=TAG::$TAG"
     - name: Print TAG 
       run: |
            echo "$GITHUB_REF"    
