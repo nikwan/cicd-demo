@@ -26,7 +26,7 @@ public class TestController {
 	@GetMapping("/")
 	public String defaultTest() {
 		log.debug("@@inside defaultTest");
-		return "version 5.0 ";
+		return "version 4.0 ";
 	}
 	
 	@GetMapping("/test/{name}")
