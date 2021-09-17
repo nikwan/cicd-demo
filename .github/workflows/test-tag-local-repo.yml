@@ -48,7 +48,7 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
-          DOCKER_TAG: latest
+          DOCKER_TAG: ${{ steps.TAG.outputs.TAG }}
   Deploy:
     needs: build
     runs-on: self-hosted
@@ -58,7 +58,7 @@ jobs:
          DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
       run: |
           export DOCKER_REPO=$DOCKER_REPO
-          export DOCKER_TAG=latest
+          export DOCKER_TAG=${{ needs.build.outputs.output1 }}
           ls -l
           echo current working dir
           pwd
