@@ -43,7 +43,7 @@ jobs:
     - name: Building and Pushing TAG-Test-Service
       run: |
            export DOCKER_REPO=$DOCKER_REPO
-           echo 'tag=========:'${{build.outputs.output1}}
+           echo 'tag=========:'${{jobs.build.outputs.output1}}
            mvn package dockerfile:push --file tags/docker-test/pom.xml
       env:
           MAVEN_USERNAME: ${{ secrets.DOCKER_USERNAME }}
