@@ -49,7 +49,7 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
-          DOCKER_TAG: ${{needs.build.outputs.output1}}
+          DOCKER_TAG: ${{ steps.TAG.outputs.TAG }}
   Deploy:
     needs: build
     runs-on: self-hosted
