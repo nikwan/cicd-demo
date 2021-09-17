@@ -43,7 +43,7 @@ jobs:
     - name: Building and Pushing TAG-Test-Service
       run: |
            export DOCKER_REPO=$DOCKER_REPO
-           mvn package --file tags/docker-test/pom.xml
+           mvn package dockerfile:push --file tags/docker-test/pom.xml
       env:
           MAVEN_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
