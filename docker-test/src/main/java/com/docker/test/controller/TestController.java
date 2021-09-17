@@ -23,6 +23,12 @@ public class TestController {
 		log.debug("test-flag:{}", test);
 	}
 	
+	@GetMapping("/")
+	public String defaultTest() {
+		log.debug("@@inside defaultTest");
+		return "version 3.0 ";
+	}
+	
 	@GetMapping("/test/{name}")
 	public String test(@PathVariable String name) {
 		log.debug("@@inside test with name:{}", name);
