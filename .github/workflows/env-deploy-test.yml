@@ -28,4 +28,4 @@ jobs:
       - name: Deploy
         run: | 
             echo I am deploying! 
-            echo secrets from DEV env {{ secrets.NSDL_RUNNER }}
+            echo secrets from DEV env ${{ secrets.NSDL_RUNNER }}
