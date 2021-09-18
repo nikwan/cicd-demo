@@ -1,0 +1,31 @@
+name: CI + CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      #- uses: actions/checkout@v2
+
+      - name: Compile
+        run: echo Hello, world!
+    
+  DeployDev:
+    name: Deploy to Dev 
+    #if: github.event_name == 'pull_request'
+    needs: [Build]
+    runs-on: ubuntu-latest
+    environment: 
+      name: DEV
+      url: 'http://dev.myapp.com'
+    steps:
+      - name: Deploy
+        run: | 
+            echo I am deploying! 
+            echo secrets from DEV env {{ secrets.NSDL_RUNNER }}
