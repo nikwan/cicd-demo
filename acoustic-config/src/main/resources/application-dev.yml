@@ -1,0 +1,39 @@
+server:
+  port: 9078
+
+spring:
+  config:
+    activate:
+      on-profile:
+      - dev
+  cloud:
+    config:
+      server:
+        git:
+          username: nikwan
+          password: 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
+          clone-on-start: true 
+          basedir: target/config
+          search-paths:
+          - /edastakhat-deploy/config/*
+          uri: https://github.com/NSDL-e-Governance/edastakhat-deploy.git
+          skip-ssl-validation: true
+          timeout: 10
+
+  application:
+   name: acoustic-config
+         
+
+logging:
+  level:
+    root: info
+
+eureka:
+  instance:
+    instanceId: EDUSTAKHAT_CONF_MS:${server.port}
+ 
+  client:
+    service-url:
+     defaultZone: http://nsdl-edastakhat-dis:8081/eureka/
+    enabled: false
+     

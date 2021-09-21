@@ -1,0 +1,6 @@
+server:
+  port: 9078
+spring:
+  profiles:
+    active:
+    - dev
