@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: acoustic-config-deploy
+  labels:
+    app: acoustic-config
+spec:
+  selector:
+    matchLabels:
+      app: acoustic-config
+  template:
+    metadata:
+      labels:
+        app: acoustic-config
+    spec:
+      containers:
+      - name: acoustic-config
+        image: localhost:32000/acoustic-config
+        ports:
+        - containerPort: 9078
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  acoustic-config-svc
+  labels:
+    app: acoustic-config
+spec:
+  selector:
+    app:  acoustic-config
+  ports:
+  - port:  80
+    targetPort:  9078
+    name: http
+    
+    
