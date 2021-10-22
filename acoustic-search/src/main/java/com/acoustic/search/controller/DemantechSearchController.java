@@ -32,7 +32,7 @@ public class DemantechSearchController {
 	IDemandTechSearchControllerService service;
 	
 	
-	@CrossOrigin(origins = "http://localhost:4200")	
+	//@CrossOrigin(origins = "http://localhost:4200")	
 	@RequestMapping(value = "/search-with-get", method = RequestMethod.GET)
 	public List<SearchDTO> searchWithGet(@RequestParam String q) throws InterruptedException, InvalidSearchCriteria {
 		log.info("inside searchWithGet");
@@ -43,7 +43,7 @@ public class DemantechSearchController {
 		
 	}
 	
-	@CrossOrigin(origins = "http://localhost:4200")	
+	//@CrossOrigin(origins = "http://localhost:4200")	
 	@RequestMapping(value = "/search-with-post", method = RequestMethod.POST)
 	public List<SearchDTO> searchWithPost(@RequestBody SearchDTO q) throws InvalidSearchCriteria {
 		log.info("inside searchWithPost");
@@ -55,7 +55,7 @@ public class DemantechSearchController {
 		return service.searchPost(q.getName());
 	}
 	
-	@CrossOrigin(origins = "http://localhost:4200")	
+	//@CrossOrigin(origins = "http://localhost:4200")	
 	@RequestMapping(value = "/search-with-paging", method = RequestMethod.POST)
 	public SearchDTOWrapper searchWithPaging(@RequestBody SearchModel q) throws InvalidSearchCriteria {
 		log.info("inside searchWithPaging");
