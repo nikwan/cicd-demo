@@ -1,0 +1,37 @@
+name: Test CICD Tag
+on:
+  push:
+    tags: 'v*.*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: self-hosted
+    
+    outputs: 
+       output1: ${{ steps.TAG.outputs.TAG }}
+    
+    steps:
+    - name: Checkout Tag CICD DEMO
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        path: tags
+    - id: TAG
+      run: |
+          cd tags
+          COMMIT_ID=`git rev-list --tags --date-order | head -1`
+          TAG=`git show-ref --tags | grep $COMMIT_ID | awk -F / '{print  $NF}'`
+          echo commitId:$COMMIT_ID and tag:$TAG
+          echo "::set-output name=TAG::$TAG" 
+    
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.4.1
+      with:
+        node-version: '14'
+    - run: npm install
+
+    - name: List Dirs In OS
+      run: |
+           ls -l
+           pwd 
