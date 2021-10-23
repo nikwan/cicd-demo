@@ -1,4 +1,4 @@
-name: Test CICD Tag
+name: Acoustic UI
 on:
   push:
     tags: 'v*.*'
